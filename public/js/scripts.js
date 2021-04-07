@@ -10,6 +10,10 @@ function setup() {
     socket.on('clearCharList', clearCharList);
     socket.on('removeCharacter', removeCharacter);
     socket.on('modifyMinion', modifyMinion);
+    socket.on('rollDicePool', rollDicePool);
+    socket.on('updateNotes', updateNotes);
+    socket.on('updateStress', updateStress);
+    socket.on('updateAttributes', updateAttributes);
 }
 
 // SET GENESYS DICE
@@ -246,4 +250,122 @@ function modifyMinion(cardID, mod) {
     var newSize = currentSize + mod;
     console.log(newSize);
     minion.innerHTML = currentSize + mod;
+}
+
+
+/////////////////
+
+// socket.emit('addDie', dieSize, dieType);
+
+var attribute_fields = document.querySelectorAll('.attributes > div')
+var dice_results = document.getElementById('dice_results')
+var dice_opportunities = document.getElementById('dice_opportunities')
+
+$('#rollDice').click(function() {
+    var diceObjects = []
+    for (i = 0; i< attribute_fields.length; i++) {
+        die_attribute = attribute_fields[i].className
+        
+        field_value = document.querySelector('.' + attribute_fields[i].className + ' input').value
+
+        if (field_value != "") {
+            dice_list = field_value.split(' ')     
+
+            for (j = 0; j < dice_list.length; j++) {
+                die_size = dice_list[j]        
+                die_result = roll_die(die_size)
+
+                dice_information = {
+                    attribute: die_attribute,
+                    size: die_size,
+                    result: die_result
+                }
+
+                diceObjects.push(dice_information)
+            }
+        }
+    }
+    // showResults(diceObjects)
+    socket.emit('rollDicePool', diceObjects);
+    console.log("ATEST")
+});   
+
+
+function rollDicePool(diceList) {
+    dice_results.innerHTML = ""
+    dice_opportunities.innerHTML = ""
+
+    console.log("TEST")
+
+    for (i = 0; i < diceList.length; i++) {
+        var new_die = document.createElement('div')
+        new_die.classList.add(diceList[i].attribute)
+        new_die.classList.add('d' + diceList[i].size)
+
+        die_value = document.createTextNode(diceList[i].result)
+
+        new_die.appendChild(die_value)
+        
+        if (diceList[i].result == "1") {
+            dice_opportunities.appendChild(new_die)
+        } else {
+            dice_results.appendChild(new_die)
+        }
+    }
+}
+
+function roll_die(value) {
+    var result = Math.floor(Math.random() * value) + 1;
+    return result
+}
+
+// $('.attributes input').on('input', function() {
+//     var fields
+//     socket.emit('attributeChange', fieldValues)
+// });
+
+$('textarea').on('input', function() {
+    var textData = document.querySelector('textarea').value
+    console.log(textData)
+    socket.emit('noteSection', textData)
+})
+
+function updateNotes(textData) {
+    var textArea = document.querySelector('textarea')
+    console.log("TEST")
+    textArea.value = textData
+}
+
+$('.stress input').on('input', function() {
+    var stressInputs = document.querySelectorAll('.stress input')
+    var stressValues = []
+    for (i=0; i<stressInputs.length; i++) {
+        stressValues.push(stressInputs[i].value)
+    }
+    socket.emit('updateStress', stressValues)
+})
+
+function updateStress(stressValues) {
+    var stressFields = document.querySelectorAll('.stress input')
+    for (i=0; i<stressFields.length; i++) {
+        stressFields[i].value = stressValues[i]
+    }
+}
+
+$('.attributes input').on('input', function() {
+    var attributeInputs = document.querySelectorAll('.attributes input')
+    var attributeValues = []
+    for (i=0; i<attributeInputs.length; i++) {
+        attributeValues.push(attributeInputs[i].value)
+    }
+
+    socket.emit('updateAttributes', attributeValues)
+})
+
+function updateAttributes(attributeValues) {
+    console.log(attributeValues)
+    var attributeFields = document.querySelectorAll('.attributes input')
+    for (i=0; i<attributeFields.length; i++) {
+        attributeFields[i].value = attributeValues[i]
+    }
 }

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Genesys Tabletop</title>
+        <title>Marvel Heroic Tabletop</title>
         <meta charset="utc-8">
         <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
@@ -14,78 +14,108 @@
     </head>
     <body>
         <nav class="navbar navbar-light bg-light">
-            <span class="navbar-brand mb-0 h1">Genesys Tabletop</span>
+            <span class="navbar-brand mb-0 h1">Marvel Heroic Tabletop</span>
             <div class="navbar-text">
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#turnModal">
-                Turn Info
+                Plot Points
               </button>
               <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#combatModal">
-                Combat Results
+                Doom Pool
               </button>
-              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#socialModal">
-                Social Results
-              </button>
+              
             </div>
           </nav>
         <div class="container">
             <div class="row">
-              <div class="col-sm border bg-light">
-                <div id="diceTray" style="display: block; height:200px;"></div>
-                <hr>
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
-                      <a class="nav-link active" id="genesys-tab" data-toggle="tab" href="#genesys" role="tab" aria-controls="genesys" aria-selected="true">Genesys</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="poly-tab" data-toggle="tab" href="#poly" role="tab" aria-controls="poly" aria-selected="false">Poly</a>
-                    </li>
-                  </ul>
-                  <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="genesys" role="tabpanel" aria-labelledby="genesys-tab">
-                        <div id="genesys" class="dieBar">
-                            <button class="boost" data-size="6" data-type="boost">Boost</button>
-                            <button class="ability" data-size="8" data-type="ability">Ability</button>
-                            <button class="proficiency" data-size="12" data-type="proficiency">Proficiency</button>
-                            <button class="setback" data-size="6" data-type="setback">Setback</button>
-                            <button class="difficulty" data-size="8" data-type="difficulty">Difficulty</button>
-                            <button class="challenge" data-size="12" data-type="challenge">Challenge</button>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="poly" role="tabpanel" aria-labelledby="poly-tab">
-                        <div id="polyhedral" class="dieBar">
-                            <button data-size="4" data-type="poly">d4</button>
-                            <button data-size="6" data-type="poly">d6</button>
-                            <button data-size="8" data-type="poly">d8</button>
-                            <button data-size="10" data-type="poly">d10</button>
-                            <button data-size="12" data-type="poly">d12</button>
-                            <button data-size="20" data-type="poly">d20</button>
-                        </div>
-                    </div>
+              <div class="col-sm border bg-light ">
+                <div class="attributes">
+                  <div class="affiliation">
+                    <div>Affiliation: </div>
+                    <input type="text">
                   </div>
-                  <hr/>
-                  <div id="controls">
-                    <button id="rollDice">Roll</button>
-                    <button id="resetDice">Reset</button>
-                    Label: <input id="rollLabel" type="text">
+                  <div class="distinction">
+                    <div>Distinction: </div>
+                    <input type="text">
+                  </div>
+                  <div class="super_power_1">
+                    <div>Super Power 1: </div>
+                    <input type="text">
+                  </div>
+                  <div class="super_power_2">
+                    <div>Super Power 2: </div>
+                    <input type="text">
+                  </div>
+                  <div class="specialty">
+                    <div>Specialty: </div>
+                    <input type="text">
+                  </div>
+                  <div class="stress">
+                    <div>Stress/ Complication: </div>
+                    <input type="text">
+                  </div>
+                  <div class="asset">
+                    <div>Asset: </div>
+                    <input type="text">
+                  </div>
+                  <div class="push">
+                    <div>Push/ Stunt/ Resource: </div>
+                    <input type="text">
+                  </div>
+                </div>
+                <div>
+                  <buton type="button" id="rollDice" class="btn btn-primary">Roll Dice</buton>
                 </div>
               </div>
               <div class="col-sm border bg-light">
-                <!-- Character List -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#charInput">
-                  Add Character
-                </button>
-                <button type="button" class="btn btn-primary" data-toggle="modal" id="clearChars">
-                  Clear List
-                </button>
-                <hr>
-                <div id="characterList"></div>
+                <div id="dice_results"></div>
+                <div id="dice_opportunities"></div>
+              </div>
+              <div class="col-sm border bg-light">
+                <div id="diceLog" style="display: block; height:600px; overflow:scroll;">
+                <textarea></textarea>
+              </div>
+              </div>
+              <div class="col-sm border bg-light">
+                <div id="fdiceLog" style="display: block; height:600px; ">
+                  <div class="charInfo">
+                    <div class="img"><img src="./media/cable.jpg"></div>
+                    <div class="info">
+                      <div class="name">Cable</div>
+                      <div class="physical stress">
+                        <div>Physical: </div>
+                        <input type="text">
+                      </div>
+                      <div class="mental stress">
+                        <div>Mental: </div>
+                        <input type="text">
+                      </div>
+                      <div class="emotional stress">
+                        <div>Emotional: </div>
+                      <input type="text">
+                    </div>
 
-              </div>
-              <div class="col-sm border bg-light">
-                <div id="diceLog" style="display: block; height:600px; overflow:scroll;"></div>
-              </div>
-              <div class="col-sm border bg-light">
-                <div id="fdiceLog" style="display: block; height:600px; overflow:scroll;"></div>
+                    </div>
+                  </div>
+                  <div class="charInfo">
+                    <div class="img"><img src="./media/wolverine.jpg"></div>
+                    <div class="info">
+                      <div class="name">Wolverine</div>
+                      <div class="physical stress">
+                        <div>Physical: </div>
+                        <input type="text">
+                      </div>
+                      <div class="mental stress">
+                        <div>Mental: </div>
+                        <input type="text">
+                      </div>
+                      <div class="emotional stress">
+                        <div>Emotional: </div>
+                      <input type="text">
+                    </div>
+
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
         </div>
@@ -137,48 +167,56 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="turnModalLabel">Character Turn</h5>
+                <h5 class="modal-title" id="turnModalLabel">Plot Points</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <div class="turnHeader">Turn Summary</div>
+                <div class="turnHeader">Before you roll, Plot Points may be spent to...</div>
                 <div class="turnText">
                   <ul>
                     <li>
-                      One Action
+                      Push your dice pool with a d6.
                     </li>
                     <li>
-                      One Maneuver
+                      Add in an extra trait from a trait group (i.e., two powers from a Power Set, or two Distinctions).
+                    </li>
+                    <li>
+                      Add a stunt die for your Power Set or Specialty.
+                    </li>
+                    <li>
+                      Activate certain special effects (SFX) in a Power Set.
                     </li>
                   </ul>
                 </div>
 
-                <div class="turnHeader">Maneuvers</div>
-                <div class="turnText"><p>Max of two maneuvers per turn. First is free, the second costs 2 strain, the exchange of an action (GCB 101), or may be performed after 2 adv is generated on an action.</p>
+                <div class="turnHeader">After You Roll, Plot Points may be spent to...</div>
                 <ul>
-                  <li><span class="bold">Aim</span>: Add <span class="dieIcon blue"></span> to next attack.</li>
-                  <li><span class="bold">Target Limbs/Spot/Item:</span> Add <span class="dieIcon black"></span><span class="dieIcon black"></span>, or two consecutive maneuvers and <span class="dieIcon black"></span>.</li>
-                  <li><span class="bold">Guard:</span> Add <span class="dieIcon black"></span> to own attacks; increase Melee Defense by 1.</li>
-                  <li><span class="bold">Assist:</span> Add <span class="dieIcon blue"></span> to ally's next check.</li>
-                  <li><span class="bold">Interact</span> with environment or gear.</li>
-                  <li><span class="bold">Mount or dismount.</span></li>
-                  <li><span class="bold">Move:</span> One maneuver to move between Short and Medium. Two maneuvers for Medium to Long, or Long to Extreme. Stand from prone.</li>
-                  <li><span class="bold">Engage:</span> One maneuver to engage a character. One maneuever to disengage an enemy (engaged to short).</li>
+                  <li>Add an extra die from your roll to your total.</li>
+                  <li>Keep an extra effect die.</li>
+                  <li>Activate an opportunity rolled by the Watcher.</li>
+                    <li>Activate certain special effects (SFX) in a Power Set.</li>
+                      <li>Use an effect die from a reaction roll.</li>
+                  <li>Change stress you’ve taken to another type.</li>
                 </ul>
-              </div>
-              <div class="turnHeader">
-                Story Points
-              </div>
-              <div clas="turnText">
-                <ul>
-                  <li>Upgrade dice by 1.</li>
-                  <li>Upgrade opponent's difficulty by 1.</li>
-                  <li>Use special ability/ talent.</li>
-                  <li>Introduce new fiction.</li>
-                </ul>
-              </div>
+
+                <div class="turnHeader">During a Transition Scene, Plot Points may be spent to...              </div>
+                <div clas="turnText">
+                  <ul>
+                    <li>Add a resource die linked to a Specialty.</li>
+                  </ul>
+                </div>
+
+                <div class="turnHeader">Plot Points may be earned when you...</div>
+                <div clas="turnText">
+                  <ul>
+                    <li>Use a Distinction negatively.</li>
+                      <li>Activate a Limit on a Power Set.</li>
+                        <li>Have an opportunity on your dice activated by the Watcher
+                      or another player to add to the doom pool.</li>
+                  </ul>
+                </div>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -192,115 +230,39 @@
           <div class="modal-dialog" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="combatModalLabel">Combat Die Results</h5>
+                <h5 class="modal-title" id="combatModalLabel">Doom Pool</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <div class="turnHeader">Advantage / Triumph</div>
+                <div class="turnHeader">BEFORE THE ROLL, YOU CAN SPEND DOOM DICE TO...</div>
                 <div class="turnText">
-                  <table>
-                    <tr>
-                      <th>Roll</th>
-                      <th>Result</th>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-advantage"></span></i></div> or <div><i><span class="ffi-grpg-triumph"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Recover 1 strain.</li>
-                          <li>Add <span class="dieIcon blue"></span> to next check by self or ally.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-advantage"></span><span class="ffi-grpg-advantage"></span></i></div> or <div><i><span class="ffi-grpg-triumph"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Perform an immediate free maneuver (still 2 max per turn).</li>
-                          <li>Add <span class="dieIcon black"></span> to next skill check by opponent.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-advantage"></span><span class="ffi-grpg-advantage"></span><span class="ffi-grpg-advantage"></span></i></div> or <div><i><span class="ffi-grpg-triumph"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Negate enemy defense.</li>
-                          <li>Ignore environment.</li>
-                          <li>Damage a target's gear/limbs.</li>
-                          <li>Gain +1 defense for 1 turn.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-triumph"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Upgrade difficulty check of target's next check.</li>
-                          <li>Upgrade an ally's next check.</li>
-                          <li>Do something 'vital'.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-triumph"></span><span class="ffi-grpg-triumph"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Destroy a target's equipment or limb completely.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                  </table>
+                  <ul>
+                    <li>Add a doom die to a dice pool.</li>
+                    <li>Activate certain villain SFX.</li>
+                  </ul>
                 </div>
 
-                <div class="turnHeader">Threat / Despair</div>
+                <div class="turnHeader">AFTER THE ROLL, YOU CAN SPEND DOOM DICE TO...</div>
                 <div class="turnText">
-                  <table>
-                    <tr>
-                      <th>Roll</th>
-                      <th>Result</th>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-threat"></span></i></div> or <div><i><span class="ffi-grpg-despair"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Active character suffers 1 strain.</li>
-                          <li>Lose benefits of previous maneuver (ie Guard).</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-threat"></span><span class="ffi-grpg-threat"></span></i></div> or <div><i><span class="ffi-grpg-despair"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Opponent may immediately perform one maneuver as an incidental response.</li>
-                          <li>Add <span class="dieIcon blue"></span> to target's next check.</li>
-                          <li>Active character or ally suffers <span class="dieIcon black"></span> on next action.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-threat"></span><span class="ffi-grpg-threat"></span><span class="ffi-grpg-threat"></span></i></div> or <div><i><span class="ffi-grpg-despair"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Active character falls prone.</li>
-                          <li>Active character grants significant combat advantage to enemy.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-despair"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Weapons runs out of ammo and cannot be used for rest of encounter.</li>
-                          <li>Upgrade difficulty of an ally's next check or next check of the active character.</li>
-                          <li>The tool or weapon being used is damaged.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                  </table>
+                  <ul>
+                    <li>Add an extra die from the roll to the total (doom die size or smaller).
+                    <li>Keep an extra effect die from your roll when attacking multiple targets (doom die size or smaller).</li>
+                    <li>Use an effect die from a reaction roll.</li>
+                    <li>Activate certain villain SFX.</li>
+                  </ul>
+                </div>
+
+                <div class="turnHeader">DURING A SCENE, YOU CAN SPEND DOOM DICE TO...</div>
+                <div class="turnText">
+                  <ul>
+                    <li>Create a new Scene Distinction (d8 or larger).</li>
+                      <li>Interrupt the action order with a Watcher character.</li>
+                        <li>Split a hero off from the rest of the situation (re-adjusting the Solo/Buddy/Team dynamic).</li>
+                          <li>Activate Scene or Event effects.</li>
+                            <li>Spend 2d12 to end the Scene immediately.</li>
+                  </ul>
                 </div>
 
               </div>
@@ -311,116 +273,7 @@
           </div>
         </div>
 
-        <!-- Social Die Results -->
-        <div class="modal fade" id="socialModal" tabindex="-1" role="dialog" aria-labelledby="socialModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="socialModalLabel">Social Die Results</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
-                <div class="turnHeader">Advantage / Triumph</div>
-                <div class="turnText">
-                  <table>
-                    <tr>
-                      <th>Roll</th>
-                      <th>Result</th>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-advantage"></span></i></div> or <div><i><span class="ffi-grpg-triumph"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Recover 1 strain.</li>
-                          <li>Add <span class="dieIcon blue"></span> to next check by self or ally.</li>
-                          <li>Notice an important detail.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-advantage"></span><span class="ffi-grpg-advantage"></span></i></div> or <div><i><span class="ffi-grpg-triumph"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Learn Strength/Flaw or the target.</li>
-                          <li>Add <span class="dieIcon black"></span> to next check by target.</li>
-                          <li>Add <span class="dieIcon black"></span> to any ally's or character's next check.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-advantage"></span><span class="ffi-grpg-advantage"></span><span class="ffi-grpg-advantage"></span></i></div> or <div><i><span class="ffi-grpg-triumph"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Learn Desire/ Fear of the target.</li>
-                          <li>Conceal your goal.</li>
-                          <li>Learn the goal of your target (if there is one).</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-triumph"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Learn a motivation of any character.</li>
-                          <li>Upgrade difficulty of target's next check.</li>
-                          <li>Upgrade next check of self or ally.</li>
-                          <li>Do something vital to encounter.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-
-                <div class="turnHeader">Threat / Despair</div>
-                <div class="turnText">
-                  <table>
-                    <tr>
-                      <th>Roll</th>
-                      <th>Result</th>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-threat"></span></i></div> or <div><i><span class="ffi-grpg-despair"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Active character suffers 1 strain.</li>
-                          <li>Become distracted or sidetracked, results in narratively bad times.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-threat"></span><span class="ffi-grpg-threat"></span></i></div> or <div><i><span class="ffi-grpg-despair"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Accidentally reveal Strength/ Flaw.</li>
-                          <li>Add <span class="dieIcon blue"></span> to target's next check.</li>
-                          <li>Active character or ally suffers <span class="dieIcon black"></span> on next action.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-threat"></span><span class="ffi-grpg-threat"></span><span class="ffi-grpg-threat"></span></i></div> or <div><i><span class="ffi-grpg-despair"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Reveal Desire/ Fear.</li>
-                          <li>Accidentally reveal true goal of encounter.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><div><i><span class="ffi-grpg-despair"></span></i></div></td>
-                      <td>
-                        <ul>
-                          <li>Reveals true motivation of their character.</li>
-                          <li>Learn a false motivation of target (active character believe's it to be true).</li>
-                          <li>Upgrade difficulty of active or ally's next check.</li>
-                          <li>Embroiled in irrelevant events and cannot act during next round.</li>
-                        </ul>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
+    
         
         <script src="js/scripts.js"></script>
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>

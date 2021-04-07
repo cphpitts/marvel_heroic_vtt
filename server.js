@@ -89,22 +89,31 @@ io.on('connection', (socket) => {
         }
     }
 
+    ///////////
+    //UPDATE DICE POOL RESULTS
+    socket.on('rollDicePool', rollDicePool);
+    function rollDicePool(diceList) {
+        io.sockets.emit('rollDicePool', diceList)
+    }
+
+    //UPDATE NOTES SECTION
+    socket.on('noteSection', updateNotes);
+    function updateNotes(textData) {
+        io.sockets.emit('updateNotes', textData)
+    }
+
+    //UPDATE STRESS VALUES
+    socket.on('updateStress', updateStress);
+    function updateStress(stressValues) {
+        io.sockets.emit('updateStress', stressValues)
+    }
+
+    //UPDATE ATTRIBUTE VALUES
+    socket.on('updateAttributes', updateAttributes);
+    function updateAttributes(attributeValues) {
+        console.log(attributeValues)
+        io.sockets.emit('updateAttributes', attributeValues)
+    }
+
+
 })
-
-
-// function newConnection(socket) {
-//     // console.log("new connection: " + socket.id);
-
-//     socket.on('dice', diceMsg);
-//     socket.on('roll', updateDice);
-
-
-//     function diceMsg(value) {
-//         socket.broadcast.emit('dice', value);
-//     }
-
-//     function updateDice(newValues) {
-//         socket.broadcast.emit('roll', newValues);
-//     }
-// }
-
