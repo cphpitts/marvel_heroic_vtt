@@ -324,7 +324,7 @@ function roll_die(value) {
 //     socket.emit('attributeChange', fieldValues)
 // });
 
-$('textarea').on('input', function() {
+$('#submit_log').on('click', function() {
     var textData = document.querySelector('textarea').value
     console.log(textData)
     socket.emit('noteSection', textData)
@@ -332,7 +332,7 @@ $('textarea').on('input', function() {
 
 function updateNotes(textData) {
     var textArea = document.querySelector('textarea')
-    console.log("TEST")
+
     textArea.value = textData
 }
 
@@ -369,3 +369,4 @@ function updateAttributes(attributeValues) {
         attributeFields[i].value = attributeValues[i]
     }
 }
+
